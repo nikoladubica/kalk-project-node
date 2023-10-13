@@ -27,7 +27,7 @@ async function populatePurchaseIdsAndInvoices() {
             let apiDataObj = parser.parse(apiData);
 
             const invoice = apiDataObj['env:DocumentEnvelope']['env:DocumentBody']['Invoice'];
-            const accountingSupplierParty = invoice['cac:AccountingSupplierParty'] !== undefined ? invoice['cac:AccountingSupplierParty']['cac:Party'] : "";
+            const accountingSupplierParty = invoice !== undefined && invoice['cac:AccountingSupplierParty'] ? invoice['cac:AccountingSupplierParty']['cac:Party'] : "";
 
             await PurchaseInvoices.create({
                 id: purchaseId.id,
