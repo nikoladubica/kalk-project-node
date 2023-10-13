@@ -1,4 +1,4 @@
-const API_KEY = '9ca54ec0-9bca-498c-82fb-bd2126975bdc';
+const API_KEY = 'DELETED';
 const GET_ALL_PURCHASE_IDS = 'https://efaktura.mfin.gov.rs/api/publicApi/purchase-invoice/ids';
 const apiUrl =               'https://efaktura.mfin.gov.rs/api/publicApi/purchase-invoice/ids?status=New'
 const GET_PURCHASE_ID_XML = 'https://efaktura.mfin.gov.rs/api/publicApi/purchase-invoice/xml';

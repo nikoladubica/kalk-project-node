@@ -1,6 +1,7 @@
 const axios = require('axios');
 const sequelize = require('../Config/database');
-const { API_KEY, GET_ALL_PURCHASE_IDS, GET_PURCHASE_ID_XML } = require('./../constants');
+const { API_KEY } = require('./../config');
+const { GET_ALL_PURCHASE_IDS, GET_PURCHASE_ID_XML } = require('./../constants');
 const PurchaseIds = require('../Models/PurchaseIdsModel');
 const PurchaseInvoices = require('../Models/PurchaseInvoicesModel');
 
