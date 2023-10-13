@@ -9,6 +9,8 @@ const app = express();
 // Initialize a cron job to get new purchase IDs every day
 require('./Cron/purchaseIdsCron');
 
+app.use('/', express.static('../../kalk-project/react/build'));
+
 const purchaseIdsRoutes = require('./Routes/PurchaseIdsRoutes');
 app.use('/api/purchase-ids', purchaseIdsRoutes);
 

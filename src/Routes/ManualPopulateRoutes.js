@@ -1,12 +1,20 @@
 const express = require('express');
 const router = express.Router();
 const { spawn } = require('child_process');
+const { PROD } = require('./../config');
 
 // Define a route to manually trigger data population
 router.post('/', (req, res) => {
     // Run the data population script
-    // TODO!! Put full path on the server
-    const script = spawn('node', ['/Users/macbook/Sites/kalk-project-node/src/Scripts/populatePurchaseIdsAndInvoices.js']);
+    let script = null;
+
+    if (PROD === true) {
+        // Server path
+        script = spawn('node', ['/var/www/kalk-project-node/src/Scripts/populatePurchaseIdsAndInvoices.js']);
+    } else {
+        // Local path
+        script = spawn('node', ['/Users/macbook/Sites/kalk-project-node/src/Scripts/populatePurchaseIdsAndInvoices.js']);
+    }
 
     script.stdout.on('data', (data) => {
         console.log(`stdout: ${data}`);
