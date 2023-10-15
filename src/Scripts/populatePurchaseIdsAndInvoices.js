@@ -1,6 +1,8 @@
 const PurchaseIds = require('../Models/PurchaseIdsModel');
 const PurchaseInvoices = require('../Models/PurchaseInvoicesModel');
+const InvoiceLines = require('../Models/InvoiceLinesModel');
 const externalApiService = require('../Services/externalApiService');
+const { setInvoiceLinesValues } = require('../Helpers/helper');
 const sequelize = require('../Config/database');
 const { XMLParser } = require("fast-xml-parser");
 
@@ -31,19 +33,45 @@ async function populatePurchaseIdsAndInvoices() {
 
             await PurchaseInvoices.create({
                 id: purchaseId.id,
-                issueDate: invoice['cbc:IssueDate'],
-                dueDate: invoice['cbc:DueDate'],
-                deliveryDate: invoice['cac:Delivery']['cbc:ActualDeliveryDate'],
+                issueDate: invoice !== undefined ? invoice['cbc:IssueDate'] : '',
+                dueDate: invoice !== undefined ? invoice['cbc:DueDate'] : '',
+                deliveryDate: invoice !== undefined ? invoice['cac:Delivery']['cbc:ActualDeliveryDate'] : '',
                 supplierName: accountingSupplierParty['cac:PartyName'] ? accountingSupplierParty['cac:PartyName']['cbc:Name'] : '',
-                costMinusVat: invoice['cac:TaxTotal']['cac:TaxSubtotal']['cbc:TaxableAmount'],
-                vat: invoice['cac:TaxTotal']['cac:TaxSubtotal']['cbc:TaxAmount'],
-                totalCost: invoice['cac:LegalMonetaryTotal']['cbc:PayableAmount']
+                costMinusVat: invoice !== undefined ? invoice['cac:TaxTotal']['cac:TaxSubtotal']['cbc:TaxableAmount'] : '',
+                vat: invoice !== undefined ? invoice['cac:TaxTotal']['cac:TaxSubtotal']['cbc:TaxAmount'] : '',
+                totalCost: invoice !== undefined ? invoice['cac:LegalMonetaryTotal']['cbc:PayableAmount'] : ''
             });
+
+            populateInvoiceLines(purchaseId.id, invoice)
         }
 
         console.log('Purchase IDs and Invoices populated successfully.');
     } catch (error) {
         console.error('Error populating purchase IDs:', error);
+    }
+}
+
+async function populateInvoiceLines(purchaseId, invoice) {
+    try {
+        const invoiceLine = invoice['cac:InvoiceLine']
+
+        try {
+            for (const item of invoiceLine) {
+                await InvoiceLines.create(setInvoiceLinesValues(purchaseId, item));
+            }
+        } catch(error) {
+            console.log("invoiceLine in not an array. ", error);
+
+            try {
+                await InvoiceLines.create(setInvoiceLinesValues(purchaseId, invoiceLine));
+            } catch(error2) {
+                console.log("invoiceLine in not an object. ", error2);
+            }
+        }
+
+        console.log('Invoice lines populated successfully.');
+    } catch (error) {
+        console.error('Error populating invoice lines:', error);
     }
 }
 

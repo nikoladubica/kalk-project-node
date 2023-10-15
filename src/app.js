@@ -22,7 +22,13 @@ app.use('/api/purchase-ids', purchaseIdsRoutes);
 const purchaseInvoicesRoutes = require('./Routes/PurchaseInvoicesRoutes');
 app.use('/api/purchase-invoices', purchaseInvoicesRoutes);
 
-const manualPopulateRoute = require('./Routes/ManualPopulateRoutes'); // Import the new route
+const invoiceLinesRoutes = require('./Routes/InvoiceLinesRoutes');
+app.use('/api/invoice-lines', invoiceLinesRoutes);
+
+const manualPopulateRoute = require('./Routes/ManualPopulateRoutes');
 app.use('/api/fetch-external', manualPopulateRoute);
+
+// const manualPopulateInvoiceLinesRoute = require('./Routes/ManualPopulateInvoiceLinesRoute');
+// app.use('/api/fetch-external', manualPopulateInvoiceLinesRoute);
 
 module.exports = app;

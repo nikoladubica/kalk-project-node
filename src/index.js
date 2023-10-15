@@ -1,5 +1,6 @@
 const app = require('./app');
 const sequelize = require('./Config/database');
+const { PROD } = require('./config');
 
 // Database synchronization (if using Sequelize)
 sequelize.sync()
@@ -11,7 +12,7 @@ sequelize.sync()
     });
 
     // Start the Express server
-const port = process.env.PORT || 3000;
+const port = PROD === true ? 3000 : 4000;
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
 });

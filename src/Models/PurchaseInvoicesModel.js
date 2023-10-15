@@ -1,5 +1,6 @@
 const { DataTypes } = require('sequelize');
 const db = require('../Config/database');
+const InvoiceLines = require('./InvoiceLinesModel');
 
 const PurchaseInvoices = db.define('PurchaseInvoices', {
     id: {
@@ -28,5 +29,7 @@ const PurchaseInvoices = db.define('PurchaseInvoices', {
         type: DataTypes.FLOAT(10, 2)
     },
 });
+
+PurchaseInvoices.hasOne(InvoiceLines, { foreignKey: 'purchaseInvoiceId' });
 
 module.exports = PurchaseInvoices;

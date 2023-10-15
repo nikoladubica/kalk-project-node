@@ -5,8 +5,8 @@ async function getAllPurchaseInvoices(req, res) {
         const purchaseInvoices = await PurchaseInvoices.findAll();
         res.status(200).json(purchaseInvoices);
     } catch (error) {
-        console.error('Error fetching purchase IDs:', error);
-        res.status(500).json({ error: 'Error fetching purchase IDs.' });
+        console.error('Error fetching purchase invoices: ', error);
+        res.status(500).json({ error: 'Error fetching purchase invoices.' });
     }
 }
 

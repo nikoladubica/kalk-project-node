@@ -5,13 +5,13 @@ const { GET_ALL_PURCHASE_IDS, GET_PURCHASE_ID_XML } = require('./../constants');
 const PurchaseIds = require('../Models/PurchaseIdsModel');
 const PurchaseInvoices = require('../Models/PurchaseInvoicesModel');
 
+const headers = {
+    "accept": "application/json;charset=UTF-8",
+    "ApiKey": API_KEY
+};
+
 // TODO!! Add parameter "purchase_status" to this function, so we can provide multiple status options, not just "New"
 async function fetchPurchaseIdsFromExternalAPI() {
-    const headers = {
-        "accept": "application/json;charset=UTF-8",
-        "ApiKey": API_KEY
-    };
-
     try {
         // Retrieve existing IDs from the database
         const existingIds = await PurchaseIds.findAll({ attributes: ['id'] });
@@ -44,11 +44,6 @@ async function fetchPurchaseIdsFromExternalAPI() {
 }
 
 async function fetchPurchaseInvoicesByPurchaseId(purchaseId) {
-    const headers = {
-        "accept": "application/json;charset=UTF-8",
-        "ApiKey": API_KEY
-    };
-
     try {
         // Retrieve existing IDs from the database
         const existingIds = await PurchaseInvoices.findAll({ attributes: ['id'] });
